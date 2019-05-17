@@ -1,5 +1,5 @@
 <domain type='{{ definition[1]['driver'] | default('kvm') }}'>
-  <name>{{ libvirt_resource_name }}{{ definition[5] }}{{ definition[2] }}</name>
+  <name>{{ libvirt_resource_name }}{{ definition[5] }}{{ definition[2] }}{% if definition[9] != '' %}{{ definition[9] }}{% endif %}</name>
   <memory unit='KiB'>{{ definition[1]['memory'] * 1024 | int }}</memory>
   <vcpu placement='static'>{{ definition[1]['vcpus'] }}</vcpu>
   <os>

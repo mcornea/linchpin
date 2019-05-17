@@ -12,6 +12,7 @@
                     },
                     "name": { "type": "string", "required": true },
                     "name_separator": { "type": "string", "required": false },
+                    "name_suffix": { "type": "string", "required": false },
                     "vcpus": { "type": "integer", "required": true },
                     "cpu_mode": { "type": "string", "required": false },
                     "memory": { "type": "integer", "required": true },

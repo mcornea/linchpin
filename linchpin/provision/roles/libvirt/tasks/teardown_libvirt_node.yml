@@ -4,13 +4,14 @@
 
 - name: "halt node"
   virt:
-    name: "{{ libvirt_resource_name }}{{ instance[2] }}{{ instance[1] }}"
+    name: "{{ libvirt_resource_name }}{{ instance[2] }}{{ instance[1] }}{% if instance[3] != '' %}{{ instance[3] }}{% endif %}"
     state: destroyed
     uri: "{{ instance[1]['uri'] | default('qemu:///system') }}"
   with_nested:
     - ["{{ res_def }}"]
     - "{{ res_count }}"
     - ["{{ res_def['name_separator'] | default('_')  }}"]
+    - ["{{ res_def['name_suffix'] | default('')  }}"]
   loop_control:
     loop_var: instance
   register: res_def_output
@@ -19,12 +20,13 @@
   when: not _async
 
 - name: "get XML definition of vm"
-  command: "virsh -c {{ instance[1]  }} dumpxml {{ instance[0] }}{{ instance[3] }}{{ instance[2] }}"
+  command: "virsh -c {{ instance[1]  }} dumpxml {{ instance[0] }}{{ instance[3] }}{{ instance[2] }}{% if instance[4] != '' %}{{ instance[4] }}{% endif %}"
   with_nested:
     - ["{{  libvirt_resource_name }}"]
     - ["{{ res_def['uri'] | default('qemu:///system') }}"]
     - "{{ res_count }}"
     - ["{{ res_def['name_separator'] | default('_')  }}"]
+    - ["{{ res_def['name_suffix'] | default('')  }}"]
   loop_control:
     loop_var: instance
   when: not _async
@@ -33,13 +35,14 @@
 
 - name: "undefine node"
   virt:
-    name: "{{ libvirt_resource_name }}{{ instance[2] }}{{ instance[1] }}"
+    name: "{{ libvirt_resource_name }}{{ instance[2] }}{{ instance[1] }}{% if instance[3] != '' %}{{ instance[3] }}{% endif %}"
     command: undefine
     uri: "{{ instance[0]['uri'] | default('qemu:///system') }}"
   with_nested:
     - ["{{ res_def }}"]
     - "{{ res_count }}"
     - ["{{ res_def['name_separator'] | default('_')  }}"]
+    - ["{{ res_def['name_suffix'] | default('')  }}"]
   loop_control:
     loop_var: instance
   register: res_def_output
